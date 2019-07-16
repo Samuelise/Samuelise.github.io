@@ -152,6 +152,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-hexo-github个人博客的基础使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/16/hexo-github个人博客的基础使用/">hexo+github个人博客的基础使用</a>
+    </h1>
+  
+
+        
+        <a href="/2019/07/16/hexo-github个人博客的基础使用/" class="archive-article-date">
+  	<time datetime="2019-07-16T02:45:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我们搭建好了博客，那自然就是要开始写博客了。值得一提的是，hexo博客采用的是markdown文本格式，因此，推荐使用markdown文本编辑软件或者在线编辑器。作者用的是CSDN在线编辑器，写过直接就可以在CSDN上发表。本文将以此为例。</p>
+<h1 id="使用过程"><a href="#使用过程" class="headerlink" title="使用过程"></a>使用过程</h1><ol>
+<li><strong>创建一个新的md文件。</strong> 在博客根目录打开Git Bash,输入：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &apos;title&apos;   #创建一个名为title的md文件</span><br></pre></td></tr></table></figure>
+<p> 以此篇文章为例，我输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &apos;hexo+github个人博客的基础使用&apos;</span><br></pre></td></tr></table></figure>
+<p>就会在source的子文件夹中创建一个md文件<br><img src="https://img-blog.csdnimg.cn/20190716104850249.PNG" alt="在这里插入图片描述"></p>
+<ol>
+<li><strong>打开编辑器写博客。</strong><ol>
+<li><strong>保留文章的md语法部分，将文章内容复制到新建的md文件中。</strong><br>值得注意的是，在使用LaTex编辑公式的时候，可能会出现在编辑器中预览正常，部署到博客上就无法正常显示的情况，这是因为LaTex与markdown语法存在语义冲突，具体解决方法可以参考 <a href="https://blog.csdn.net/crazy_scott/article/details/79293576" target="_blank" rel="noopener">https://blog.csdn.net/crazy_scott/article/details/79293576</a> 。</li>
+</ol>
+</li>
+<li><strong>保存修改后的md文件，在本地进行预览。</strong></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s  #本地预览</span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>预览无误后，就可以上传至远程仓库了。</strong></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g     #重新生成</span><br><span class="line">hexo d     #上传</span><br></pre></td></tr></table></figure>
+<h1 id="尾言"><a href="#尾言" class="headerlink" title="尾言"></a>尾言</h1><p>总的来说，整个写博客的过程，框架上还是非常简单的，但真正在写的时候可能会遇到各种各样的问题，请不要气馁，<strong>想要实现更复杂的功能，自然是要面对更多的问题</strong>，希望读者可以充分利用<strong>搜索引擎</strong>，<strong>勇敢去解决。</strong></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/07/16/hexo-github个人博客的基础使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hexo-github个人博客主题更换" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -734,6 +828,10 @@ MathJax.Hub.Queue(function() {
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">hexo、主题</a>
