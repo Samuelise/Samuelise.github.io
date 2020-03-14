@@ -16,13 +16,13 @@
 <meta property="og:site_name" content="back garden">
 <meta property="og:description" content="前言开门见山地说，C语言确实 是一门非常有用的编程语言。但在一开始接触的时候就完全不知道用处在哪，这样就很难提得起兴趣。尤其像编程语言，一行行代码看上去确实挺枯燥的。所以，我想先说一下我感受到的C语言的用处。  C语言非常适合编程入门。C语言中整个代码写下来，预定义部分、变量声明、函数声明、以及主函数的内容，整个看上去会非常的工整。尤其是，C语言要求我们自己去确定数据类型，虽然麻烦，但是这让写代码">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="c:/Users/小飞机/AppData/Roaming/Typora/typora-user-images/image-20200314164747468.png">
-<meta property="og:image" content="c:/Users/小飞机/AppData/Roaming/Typora/typora-user-images/image-20200314175249103.png">
-<meta property="og:updated_time" content="2020-03-14T10:03:37.939Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/Samuelise/img-folder/master/img/image-20200314164528328.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Samuelise/img-folder/master/img/image-20200314175249103.png">
+<meta property="og:updated_time" content="2020-03-14T12:40:26.848Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言学习总结">
 <meta name="twitter:description" content="前言开门见山地说，C语言确实 是一门非常有用的编程语言。但在一开始接触的时候就完全不知道用处在哪，这样就很难提得起兴趣。尤其像编程语言，一行行代码看上去确实挺枯燥的。所以，我想先说一下我感受到的C语言的用处。  C语言非常适合编程入门。C语言中整个代码写下来，预定义部分、变量声明、函数声明、以及主函数的内容，整个看上去会非常的工整。尤其是，C语言要求我们自己去确定数据类型，虽然麻烦，但是这让写代码">
-<meta name="twitter:image" content="c:/Users/小飞机/AppData/Roaming/Typora/typora-user-images/image-20200314164747468.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Samuelise/img-folder/master/img/image-20200314164528328.png">
   
     <link rel="alternative" href="/atom.xml" title="back garden" type="application/atom+xml">
   
@@ -181,7 +181,7 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>开门见山地说</strong>，C语言确实 是一门非常有用的编程语言。但在一开始接触的时候就完全不知道用处在哪，这样就很难提得起兴趣。尤其像编程语言，一行行代码看上去确实挺枯燥的。所以，我想先说一下我感受到的C语言的用处。</p>
 <ol>
 <li><strong>C语言非常适合编程入门。</strong>C语言中整个代码写下来，预定义部分、变量声明、函数声明、以及主函数的内容，整个看上去会非常的工整。尤其是，C语言要求我们自己去确定数据类型，虽然麻烦，但是这让写代码的人<del>对自己所使用的东西有了一定的把握</del>其实大多数情况也还是int（整数）、float（浮点数）。<strong>基础的知识掌握扎实了之后，学其他的编程语言也会很快。</strong></li>
-<li><strong>嵌入式所使用的主流语言还是C语言。</strong>C语言执行速度很快，对内存的使用可以非常细致。从速度上来说，在经过编译优化之后，甚至可以比汇编语言还要快，而且C语言也要求我们在<strong>使用内存空间时要非常严谨</strong>。C语言对硬件性能的使用效率也非常高，而且C语言的特性也使得它几乎可以嵌入到一切微处理器中。<img src="C:\Users\小飞机\AppData\Roaming\Typora\typora-user-images\image-20200314164747468.png" alt="烧写到单片机里的部分程序"></li>
+<li><strong>嵌入式所使用的主流语言还是C语言。</strong>C语言执行速度很快，对内存的使用可以非常细致。从速度上来说，在经过编译优化之后，甚至可以比汇编语言还要快，而且C语言也要求我们在<strong>使用内存空间时要非常严谨</strong>。C语言对硬件性能的使用效率也非常高，而且C语言的特性也使得它几乎可以嵌入到一切微处理器中。<img src="https://raw.githubusercontent.com/Samuelise/img-folder/master/img/image-20200314164528328.png" alt="烧写到单片机的代码"></li>
 </ol>
 <p>当然还有很多其他的用处我都没有接触过，比如操作系统、驱动开发、游戏开发……感兴趣的同学可以自己去了解、接触，当然前提是<strong>学好C语言</strong>。</p>
 <h2 id="学习方法"><a href="#学习方法" class="headerlink" title="学习方法"></a>学习方法</h2><p>那么问题来了，我们要怎么学习C语言呢？我说一下我个人的想法。</p>
@@ -196,7 +196,7 @@
 </li>
 <li><p><strong>写代码之前想清楚</strong>。尽量不要一拿到问题就去写，先想清楚怎么解决，想好之后可以头脑风暴调试一下，觉得可行才去写，这样可以有效的降低错误的概率，哪怕出错了，也可以有效地找到自己问题所在。ps.写代码是一定要仔细，我就经常在if判断条件里漏了一个“=”，出错了真的很难找，而且找到了也是真的影响心态（╯#-_-)╯╧═╧。</p>
 </li>
-<li><p><strong>多写代码，不要怕出错，善用调试</strong>。学编程语言不敲代码确实说不过去，有了想法，想好了就去写，去验证一下有没有想错。或者有自己想要实现的东西了，都可以去尝试一下，C语言真的可以做很多事，哪怕写起来麻烦点，但确实是比较万能的。C语言课设的时候我就搞了一下kunkun。<img src="C:\Users\小飞机\AppData\Roaming\Typora\typora-user-images\image-20200314175249103.png" alt="爱上kunkun"></p>
+<li><p><strong>多写代码，不要怕出错，善用调试</strong>。学编程语言不敲代码确实说不过去，有了想法，想好了就去写，去验证一下有没有想错。或者有自己想要实现的东西了，都可以去尝试一下，C语言真的可以做很多事，哪怕写起来麻烦点，但确实是比较万能的。C语言课设的时候我就搞了一下kunkun。<img src="https://raw.githubusercontent.com/Samuelise/img-folder/master/img/image-20200314175249103.png" alt="爱上kunkun"></p>
 </li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>编程能力，代码写多了，自然就有了。多去尝试些新的、难的问题，解决了之后确实是很爽的，不过真的不能自满，编程是真的人外有人，天外有天，扎扎实实学总不会吃亏。不会了就多问问，问同学，问老师，问百度都可以。最后，<strong>选到了陈老师的课真的很赚，一定要好好听呀。</strong> 祝学弟学妹们都能学好C语言，期末个个90+。<strong>加油！奥力给！</strong></p>
@@ -457,19 +457,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">hexo、github、个人博客</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">hexo、主题</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法、组合游戏、SG定理</a>
+                <a href="javascript:void(0)" class="js-tag color2">hexo、github、个人博客</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法、组合游戏、SG定理</a>
               </li>
             
             <div class="clearfix"></div>
