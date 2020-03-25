@@ -1,5 +1,6 @@
 # 指定语言环境
 language: node_js
+os: windows
 # 指定需要sudo权限
 sudo: false
 # 指定node_js版本
