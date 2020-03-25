@@ -80,7 +80,7 @@ theme: yilia
 deploy:
   type: git
   repo: 
-     github: https://github.com/Samuelise/samuelise.github.io.git,master
+     github: https://gh_token@github.com/Samuelise/samuelise.github.io.git,master
 
 jsonContent: 
     meta: false
