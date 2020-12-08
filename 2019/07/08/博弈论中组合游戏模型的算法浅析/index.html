@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="算法、组合游戏、SG定理,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="博弈论中组合游戏模型的算法浅析引言 博弈论（Game Theory),又称对策论,或赛局理论，顾名思义，它是研究多个个体或团队之间在特定条件制约下的对局中利用相关方的策略。即，在某特定游戏规则下，参与者在行动之前所准备好的一套完整的行动方案。 博弈论既是现代数学的一个分支，也是运筹学的一个学科. 组合游戏（Combinatorial Games），该类游戏通常有如下特点：  游戏有两个参与者，二者">
+<meta name="keywords" content="算法、组合游戏、SG定理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="博弈论中组合游戏模型的算法浅析">
+<meta property="og:url" content="http://yoursite.com/2019/07/08/博弈论中组合游戏模型的算法浅析/index.html">
+<meta property="og:site_name" content="back garden">
+<meta property="og:description" content="博弈论中组合游戏模型的算法浅析引言 博弈论（Game Theory),又称对策论,或赛局理论，顾名思义，它是研究多个个体或团队之间在特定条件制约下的对局中利用相关方的策略。即，在某特定游戏规则下，参与者在行动之前所准备好的一套完整的行动方案。 博弈论既是现代数学的一个分支，也是运筹学的一个学科. 组合游戏（Combinatorial Games），该类游戏通常有如下特点：  游戏有两个参与者，二者">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-12-05T10:07:16.830Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="博弈论中组合游戏模型的算法浅析">
+<meta name="twitter:description" content="博弈论中组合游戏模型的算法浅析引言 博弈论（Game Theory),又称对策论,或赛局理论，顾名思义，它是研究多个个体或团队之间在特定条件制约下的对局中利用相关方的策略。即，在某特定游戏规则下，参与者在行动之前所准备好的一套完整的行动方案。 博弈论既是现代数学的一个分支，也是运筹学的一个学科. 组合游戏（Combinatorial Games），该类游戏通常有如下特点：  游戏有两个参与者，二者">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/08/博弈论中组合游戏模型的算法浅析/">
+
+
+
+
+
+  <title>博弈论中组合游戏模型的算法浅析 | back garden</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">back garden</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">今天不学习，明天变辣鸡。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/博弈论中组合游戏模型的算法浅析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Samuelise">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="back garden">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">博弈论中组合游戏模型的算法浅析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-08T18:58:30+08:00">
+                2019-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="博弈论中组合游戏模型的算法浅析"><a href="#博弈论中组合游戏模型的算法浅析" class="headerlink" title="博弈论中组合游戏模型的算法浅析"></a>博弈论中组合游戏模型的算法浅析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p> <strong>博弈论</strong>（Game Theory),又称对策论,或赛局理论，顾名思义，它是研究多个个体或团队之间在特定条件制约下的对局中利用相关方的策略。即，在某特定游戏规则下，参与者在行动之前所准备好的一套完整的行动方案。</p>
+<p>博弈论既是现代数学的一个分支，也是运筹学的一个学科.</p>
+<p><strong>组合游戏</strong>（Combinatorial Games），该类游戏通常有如下特点：</p>
+<ol>
+<li>游戏有两个参与者，<strong>二者轮流做出决策</strong>，且二者的决策都对自己最有利。</li>
+<li>当有一人<strong>无法做出决策时游戏结束</strong>，且判无法做出决策的人负。无论二者如何做出决策，游戏均可在有限步内结，</li>
+<li>游戏的某一个状态不可以再次到达，游戏<strong>不会出现平局</strong>的局面。</li>
+<li>任意一个参与者在某一个确定状态可以做出的决策集合<strong>只与当前状态</strong>有关，而与参与者无关。</li>
+</ol>
+<h2 id="NP态理论"><a href="#NP态理论" class="headerlink" title="NP态理论"></a>NP态理论</h2><p>我们先引入一个概念————NP态理论</p>
+<ul>
+<li><strong>P-position</strong>：先手必败态。</li>
+<li><strong>N-position</strong>：先手必胜态。</li>
+</ul>
+<p>性质如下：</p>
+<ol>
+<li>决策集合为空的局面是<strong>P-position</strong>。</li>
+<li>可以移动到P-position的局面是<strong>N-position</strong>。</li>
+<li>任何决策均只能移动到N-position的局面是<strong>P-position</strong>。</li>
+</ol>
+<p>我们先看一道题，是我第一次接触到组合游戏，也是第一次接触到博弈论的题。<br>题目链接：<a href="https://www.luogu.org/problemnew/show/P3150" target="_blank" rel="noopener">pb的游戏</a></p>
+<p>游戏内容是这样的：pb先手将给出的自然数分割，割成两个非零自然数，这两个数之和等于原数，之后由zs选择留下这两个数中的一个进行分割，之后再由pb进行选择分割，如此重复。</p>
+<p>游戏规则非常简单，我们知道一个简单的结论：</p>
+<blockquote>
+<p>奇数=奇数+偶数                      偶数=偶数+偶数   or 偶数=奇数+奇数</p>
+</blockquote>
+<p> 分析如下： 对于数字N,</p>
+<ul>
+<li>$N=1$时，$N$不可再被分割，此时拿到N的参与者的局面为<strong>P-position</strong>，先手必败。<ul>
+<li>$N=2$时，N只能被分割为（1，1），将局面移动到了<strong>P-position</strong>，根据性质，当前 $N=2$的局面为<strong>N-position</strong>，先手必胜。</li>
+<li>$N&gt;2$且$N$为偶数时，那么我只需要将其拆成$a+b$，$a$，$b$均为小于N的奇数，那么我的对手无论选择$a$还是$b$，都必然会拆出一个偶数，而我只要选择那个偶数，就又回到了$N$为偶数的情况，因此，我选择的数永远是偶数，对手选择的数只能是奇数，选择$N=2$的机会永远在我这里，$N$为偶数的局面为<strong>N-position</strong>，先手必胜。</li>
+<li>$N&gt;2$且$N$为奇数时，那么我将其拆成$a+b，a，b$中必然有一个是偶数，即对于奇数$N$，无论我如何选择均会移动到N-position。因此，N为奇数的局面为<strong>P-position</strong>，先手必败。</li>
+</ul>
+</li>
+</ul>
+<p>综上，$N$为奇数，先手必败；$N$为偶数，先手必胜。<br> 代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,a</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">    <span class="keyword">while</span> (n--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;a);</span><br><span class="line">        <span class="keyword">if</span> (a &amp; <span class="number">1</span>)<span class="comment">//判断奇偶，奇数的话先手的pb必败，偶数的话先手的pb必胜，这里使用位运算加快速度，简化书写</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"zs wins\n"</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"pb wins\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这道题非常简单，可以很容易就判断出NP状态对应的局面分别是什么。但对稍微复杂一点的情况，如<a href="https://www.luogu.org/problemnew/show/P2197" target="_blank" rel="noopener">Nim游戏</a>，其对应的状态集合非常大，直接使用NP状态理论求解时非常复杂，或者虽然可以求解，但效率也是极低的，因为需要对判断每一个局面是N-position还是P-position，即使可以用动态规划或记忆化搜索来进行优化，也很难优化到令人满意的程度。</p>
+<p>那么，对于此类问题，有没有一个通用且效率高的算法呢？</p>
+<p>这就需要用到博弈论中极为重要的工具———<strong>SG函数和SG定理</strong>。我们先不加证明的引入这两个概念。</p>
+<h2 id="SG函数"><a href="#SG函数" class="headerlink" title="SG函数"></a>SG函数</h2><p>  首先定义$mex=(minimal excludant)$运算，这是施加于一个集合的运算，表示最小的不属于这个集合的非负整数。例如,$mex{0,1,2,4 }=3、mex{ 2,3,5}=0、mex{0 }=1$。</p>
+<p> 对于任意状态 $x$ ， 定义 $SG(x) = mex(S)$,其中 $S$ 是 $x$ 后继状态的SG函数值的集合。如$x$ 有三个后继状态分别为$a,b,c$，那么$SG(x) = mex{ SG（a）,SG（b）,SG（c）}$。</p>
+<p>即，</p>
+<script type="math/tex; mode=display">
+SG\big(x) =mex\{ SG\big(y):y\in S\}</script><p><strong>SG值的意义为，如果SG(x) = 0，那么x是必败态，如果SG(x) != 0,那么x是必胜态。</strong></p>
+<h2 id="Sprague-Grundy-SG-定理"><a href="#Sprague-Grundy-SG-定理" class="headerlink" title="Sprague-Grundy(SG)定理"></a>Sprague-Grundy(SG)定理</h2><p>多个组合游戏的SG函数值是每个组合游戏SG函数值的Nim和。</p>
+<blockquote>
+<p>Nim和是指各个数相异或的结果</p>
+</blockquote>
+<p>即，</p>
+<script type="math/tex; mode=display">
+SG\big(x_1,x_2,\ldots,x_n)=SG\big(x_1)\oplus SG(x_2)\oplus\cdots\oplus SG(x_n)</script><p>现在让我们再回过头来看一下<a href="https://www.luogu.org/problemnew/show/P2197" target="_blank" rel="noopener">Nim游戏</a>。</p>
+<p>游戏大致内容为：有若干堆石子，每堆石子的数量都是有限的，合法的移动是“选择一堆石子并拿走若干颗（不能不拿）”，如果轮到某个人时所有的石子堆都已经被拿空了，则判负（因为他此刻无法进行任何合法的移动）。</p>
+<p>因为一次只能从某一堆里取，所以我们先看只有一堆石子的情况。</p>
+<p>假如这一堆有n个石子，那么可取的石子数就为1 ~ n。</p>
+<p>$n=1$时，可以取走1个，$SG[1] = mex{SG[0]   }= mex{0 }  = 1$；<br>$n=2$时，可以取走1，2，$SG[2] = mex { SG[1]，SG[0]  }= mex { 0,1} = 2$;<br>$n=3$时，$SG[3] = mex{SG[2],SG[1],SG[0]  } = mex {0,1,2 }= 3$ ;<br>…..<br>可得下表，</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>…</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SG[n]</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>…</td>
+<td>n</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>显然，$SG[n]=n$。</p>
+<p>对于$n$个石子,$SG[n]=mex{0，1，2…n-1} = n$。</p>
+<p>那么对于m堆石子，根据SG定理，只需将每一堆的SG值异或起来即可。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> t, n;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;t);</span><br><span class="line">	<span class="keyword">while</span> (t--) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">		<span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">			<span class="keyword">int</span> shu;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;shu);</span><br><span class="line">			ans ^= shu;<span class="comment">//石子的个数即为该堆石子的SG值</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (!ans) <span class="built_in">printf</span>(<span class="string">"No\n"</span>);<span class="comment">//SG值为0时，先手必败</span></span><br><span class="line">		<span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面的分析不难看出，<strong>SG定理其实就是对每一个局面的NP状态进行转移。</strong></p>
+<p>下面我们给出严谨的数学证明：</p>
+<p>令  $x=(x_1,x_2,…,x_n）, x为当前状态$ ,</p>
+<p>$x’=(x_1,…,x_i’…,x_n),i\in[1 \cdots n]$,</p>
+<p>$b=SG(x_1)\oplus SG(x_2)\oplus \cdots\oplus SG(x_n)$. </p>
+<p><strong>初始条件</strong>：有$0\oplus0\oplus0\oplus\cdots\oplus0$<strong>,所有的子游戏都结束的时候游戏就结束了</strong>，此时为<strong>P-position</strong>，$SG(x)=0$。</p>
+<p>证明以下两条：</p>
+<ol>
+<li>对于所有非负整数$a&lt;b$,必定有一个状态$x’$,使得$SG(x’)=a$.</li>
+<li>没有一个$x$的子状态$x’$,使得$SG(x’)=b$.</li>
+</ol>
+<p>证1.：令$d=a\oplus b,2^k&lt;=d&lt;2^k+1$，</p>
+<p>我们有$a$在第$k+1$位为0，$b$在第$k+1$为1，那么必定有一个$SG(x_i)$在二进制表示的第$k+1$位为1，</p>
+<p>$SG（x_i)\oplus d&lt;SG(x_i)$，所以必定有$SG（x_i’)=d\oplus SG（x_i)$,</p>
+<p>所以,</p>
+<script type="math/tex; mode=display">
+a=b\oplus d=SG(x_1)\oplus \cdots \oplus SG(x_n)\oplus d=SG(x_1)\oplus\cdots\oplus SG(x_i')\oplus\cdots\oplus SG(x_n)</script><p>即，存在$x’$,使得$SG(x’)=a$</p>
+<p>证2.：$b=SG(x_1)\oplus …\oplus SG(x_i)\oplus…\oplus SG(x_n)$,</p>
+<p>$a=SG(x_1)\oplus …\oplus SG(x_i’)\oplus…\oplus SG(x_n)$,</p>
+<p>若$a=b$，则必有$SG（x_i)=SG(x_i’)$，这意味着中间一步没有进行任何改动，显然这是不被允许的。<br>即，不存在一个x的子状态$x’$，使得$SG（x’）=b$。</p>
+<p>综上，问题得证。</p>
+<p>就Nim游戏来说，它仍是组合游戏模型中较为基础的题，但值得注意的是，该模型下，不同游戏的规则虽然不同，但就其内核，<strong>大多都可以看成是Nim游戏来思考。</strong></p>
+<p>对于更为一般的SG函数值求解，我们有以下方法：</p>
+<ol>
+<li><p>可选步数为1~m的连续整数，直接取模即可，$SG(x) = x % (m+1)$;</p>
+</li>
+<li><p>可选步数为任意步，$SG(x) = x$;</p>
+</li>
+</ol>
+<ol>
+<li>可选步数为一系列不连续的数，可以自定义$GetSG()$函数计算。</li>
+</ol>
+<p>自定义的$GetSG()$函数一般有两种形式，分别为<strong>打表和搜索</strong>。下面附上代码。</p>
+<ul>
+<li><strong>打表</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//f[]：可以取走的石子个数</span></span><br><span class="line"><span class="comment">//sg[]:0~n的SG函数值</span></span><br><span class="line"><span class="comment">//hash[]:mex&#123;&#125;</span></span><br><span class="line"><span class="keyword">int</span> f[N],sg[N],hash[N];    </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getSG</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j;</span><br><span class="line">    <span class="built_in">memset</span>(sg,<span class="number">0</span>,<span class="keyword">sizeof</span>(sg));</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">memset</span>(hash,<span class="number">0</span>,<span class="keyword">sizeof</span>(hash));</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">1</span>;f[j]&lt;=i;j++)</span><br><span class="line">            hash[sg[i-f[j]]]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;=n;j++)    <span class="comment">//求mex&#123;&#125;中未出现的最小的非负整数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(hash[j]==<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                sg[i]=j;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>搜索</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意 S数组要按从小到大排序 SG函数要初始化为-1 对于每个集合只需初始化1遍</span></span><br><span class="line"><span class="comment">//n是集合s的大小 S[i]是定义的特殊取法规则的数组</span></span><br><span class="line"><span class="keyword">int</span> s[<span class="number">110</span>],sg[<span class="number">10010</span>],n;</span><br><span class="line"></span><br><span class="line"><span class="comment">//dfs</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getSG</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">if</span>(sg[x]!=<span class="number">-1</span>)</span><br><span class="line">        <span class="keyword">return</span> sg[x];</span><br><span class="line">    <span class="keyword">bool</span> vis[<span class="number">110</span>];</span><br><span class="line">    <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="keyword">sizeof</span>(vis));</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(x&gt;=s[i])</span><br><span class="line">        &#123;</span><br><span class="line">            SG_dfs(x-s[i]);</span><br><span class="line">            vis[sg[x-s[i]]]=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> e;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;;i++)</span><br><span class="line">        <span class="keyword">if</span>(!vis[i])</span><br><span class="line">        &#123;</span><br><span class="line">            e=i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> sg[x]=e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，附上一道实战题目和ac代码。<br><a href="http://acm.hdu.edu.cn/showproblem.php?pid=1848" target="_blank" rel="noopener">斐波那契一次又一次</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXN 1000 + 10</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 20</span></span><br><span class="line"><span class="keyword">int</span> f[N],SG[MAXN],S[MAXN];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getSG</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j;</span><br><span class="line">    <span class="built_in">memset</span>(SG,<span class="number">0</span>,<span class="keyword">sizeof</span>(SG));</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(S,<span class="number">0</span>,<span class="keyword">sizeof</span>(S));</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; f[j] &lt;= i &amp;&amp; j &lt;= N; j++)</span><br><span class="line">            S[SG[i-f[j]]] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>;;j++) <span class="keyword">if</span>(!S[j])&#123;</span><br><span class="line">            SG[i] = j;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n,m,k;</span><br><span class="line">    f[<span class="number">0</span>] = f[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= <span class="number">16</span>; i++)</span><br><span class="line">        f[i] = f[i<span class="number">-1</span>] + f[i<span class="number">-2</span>];</span><br><span class="line">    getSG(<span class="number">1000</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;m,&amp;n,&amp;k),m||n||k)&#123;</span><br><span class="line">        <span class="keyword">if</span>(SG[n]^SG[m]^SG[k]) <span class="built_in">printf</span>(<span class="string">"Fibo\n"</span>);</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">"Nacci\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法、组合游戏、SG定理/" rel="tag"># 算法、组合游戏、SG定理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/08/Hello-World/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/10/Windows环境下，hexo-github搭建个人博客/" rel="prev" title="Windows环境下，hexo+github搭建个人博客">
+                Windows环境下，hexo+github搭建个人博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Samuelise">
+            
+              <p class="site-author-name" itemprop="name">Samuelise</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#博弈论中组合游戏模型的算法浅析"><span class="nav-number">1.</span> <span class="nav-text">博弈论中组合游戏模型的算法浅析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NP态理论"><span class="nav-number">1.2.</span> <span class="nav-text">NP态理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SG函数"><span class="nav-number">1.3.</span> <span class="nav-text">SG函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sprague-Grundy-SG-定理"><span class="nav-number">1.4.</span> <span class="nav-text">Sprague-Grundy(SG)定理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Samuelise</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

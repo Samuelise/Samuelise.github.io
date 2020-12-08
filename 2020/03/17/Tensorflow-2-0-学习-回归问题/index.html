@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tensorflow2.0神经网络,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="神经网络导入成年人大脑中包含了约1000亿个神经元，每个神经元通过树突获取输入信号，通过轴突传递输出信号，神经元之间相互连接构成了巨大的神经网络，从而形成了人脑的感知和意识基础。  1943年，提出了模拟生物神经元机制的人工神经网络的数学模型。抽象成下面的数学结构：  线性问题神经元输入向量$x=[x1,x_2,x_3,…,x_n]^T$，经过函数映射：$f\theta:x\rightarrow">
+<meta name="keywords" content="tensorflow2.0神经网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tensorflow 2.0 学习----回归问题">
+<meta property="og:url" content="http://yoursite.com/2020/03/17/Tensorflow-2-0-学习-回归问题/index.html">
+<meta property="og:site_name" content="back garden">
+<meta property="og:description" content="神经网络导入成年人大脑中包含了约1000亿个神经元，每个神经元通过树突获取输入信号，通过轴突传递输出信号，神经元之间相互连接构成了巨大的神经网络，从而形成了人脑的感知和意识基础。  1943年，提出了模拟生物神经元机制的人工神经网络的数学模型。抽象成下面的数学结构：  线性问题神经元输入向量$x=[x1,x_2,x_3,…,x_n]^T$，经过函数映射：$f\theta:x\rightarrow">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/Samuelise/img-folder/raw/master/img/%E5%85%B8%E5%9E%8B%E7%94%9F%E7%89%A9%E7%A5%9E%E7%BB%8F%E5%85%83%E7%BB%93%E6%9E%84.jpg">
+<meta property="og:image" content="https://github.com/Samuelise/img-folder/raw/master/img/%E7%A5%9E%E7%BB%8F%E5%85%83%E6%95%B0%E5%AD%A6%E7%BB%93%E6%9E%84.jpg">
+<meta property="og:image" content="https://github.com/Samuelise/img-folder/raw/master/img/%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E6%A2%AF%E5%BA%A6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Samuelise/img-folder/master/img/测试结果.png">
+<meta property="og:updated_time" content="2020-12-05T10:07:16.830Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tensorflow 2.0 学习----回归问题">
+<meta name="twitter:description" content="神经网络导入成年人大脑中包含了约1000亿个神经元，每个神经元通过树突获取输入信号，通过轴突传递输出信号，神经元之间相互连接构成了巨大的神经网络，从而形成了人脑的感知和意识基础。  1943年，提出了模拟生物神经元机制的人工神经网络的数学模型。抽象成下面的数学结构：  线性问题神经元输入向量$x=[x1,x_2,x_3,…,x_n]^T$，经过函数映射：$f\theta:x\rightarrow">
+<meta name="twitter:image" content="https://github.com/Samuelise/img-folder/raw/master/img/%E5%85%B8%E5%9E%8B%E7%94%9F%E7%89%A9%E7%A5%9E%E7%BB%8F%E5%85%83%E7%BB%93%E6%9E%84.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/17/Tensorflow-2-0-学习-回归问题/">
+
+
+
+
+
+  <title>Tensorflow 2.0 学习----回归问题 | back garden</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">back garden</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">今天不学习，明天变辣鸡。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/Tensorflow-2-0-学习-回归问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Samuelise">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="back garden">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Tensorflow 2.0 学习----回归问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-17T19:17:53+08:00">
+                2020-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="神经网络导入"><a href="#神经网络导入" class="headerlink" title="神经网络导入"></a>神经网络导入</h2><p>成年人大脑中包含了约1000亿个神经元，每个神经元通过树突获取输入信号，通过轴突传递输出信号，神经元之间相互连接构成了巨大的神经网络，从而形成了人脑的感知和意识基础。</p>
+<p><img src="https://github.com/Samuelise/img-folder/raw/master/img/%E5%85%B8%E5%9E%8B%E7%94%9F%E7%89%A9%E7%A5%9E%E7%BB%8F%E5%85%83%E7%BB%93%E6%9E%84.jpg" alt="典型生物神经元结构"></p>
+<p>1943年，提出了模拟生物神经元机制的人工神经网络的数学模型。抽象成下面的数学结构：</p>
+<p><img src="https://github.com/Samuelise/img-folder/raw/master/img/%E7%A5%9E%E7%BB%8F%E5%85%83%E6%95%B0%E5%AD%A6%E7%BB%93%E6%9E%84.jpg" alt="神经元数学结构"></p>
+<h2 id="线性问题"><a href="#线性问题" class="headerlink" title="线性问题"></a>线性问题</h2><p>神经元输入向量$x=[x<em>1,x_2,x_3,…,x_n]^T$，经过函数映射：$f</em>\theta:x\rightarrow y$后得到输出y，其中$\theta$为函数自身的参数，在一种简化的情况下，即线性变换：$f(x)=w^Tx+b，w=[w_1,w_2,w_3,…,w_n]^T$，展开成标量形式:$f(x)=w_1x_1+w_2x_2+w_3x_3+…+w_nx_n+b$，参数$\theta$确定了神经元的状态，固定参数即可确定此神经元的处理逻辑。</p>
+<p>对于N输入的神经元模型，只需采样N+1组不同数据点即可完美求解出参数。但实际上，对于任何采样点，都有可能存在一定的误差，我们假设误差𝜖满足均值为𝜇，方差$𝜎^2$的高斯分布，所以采集到的样本为𝑦 = 𝑤𝑥 + 𝑏 + 𝜖, 𝜖~𝒩(𝜇, $𝜎^2$)。</p>
+<p>下面以w=1.477，b=0.089为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#生成样本数据</span></span><br><span class="line">data=[]  <span class="comment">#样本集</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):       <span class="comment">#100个点</span></span><br><span class="line">    x=np.random.uniform(<span class="number">-10.</span>,<span class="number">10.</span>)         <span class="comment">#随机采样输入x</span></span><br><span class="line">    eps=np.random.normal(<span class="number">0.</span>,<span class="number">0.1</span>)          <span class="comment">#高斯分布的误差</span></span><br><span class="line">    y=<span class="number">1.477</span>*x+<span class="number">0.089</span>+eps               <span class="comment">#加入误差的函数</span></span><br><span class="line">    data.append([x,y])                    <span class="comment">#把数据加入样本集中</span></span><br><span class="line">data=np.array(data)                     <span class="comment">#转换成numpy数组</span></span><br></pre></td></tr></table></figure>
+<p>在引入误差后，即使简单如线性模型，如果只采集两个点，也会带来很大的估计误差。为了减少估计误差，可以通过采样多组数据样本集合$𝔻$ ={$(𝑥^{(1)}, 𝑦^{(1)}), (x^{(2)}, x^{(2)}), … , (𝑥^{(𝑛)}, 𝑦^{(𝑛)})$}，然后找出一条最好的直线，使它尽可能让所有点，离这条直线的误差之和最小。常用的用预测值𝑤𝑥(𝑖) + 𝑏与真实值𝑦(𝑖)之间的差的平方和作为总误差$L：L=\frac{1}{n}\sum^{n}_{i=1}(wx^{(i)}+b-y^{(i)})^2$，然后搜索到一组w,b，使得$L$的值最小。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#function:计算误差</span></span><br><span class="line"><span class="comment">#param:b,w---待优化参数     points---样本点</span></span><br><span class="line"><span class="comment">#return：均方误差（float）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mse</span><span class="params">(b,w,points)</span>:</span></span><br><span class="line">    totalerror=<span class="number">0</span>    <span class="comment">#均方差误差</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(points)):</span><br><span class="line">        x=points[i,<span class="number">0</span>]               <span class="comment">#第i个点的x值</span></span><br><span class="line">        y=points[i,<span class="number">1</span>]               <span class="comment">#第i个点的y值</span></span><br><span class="line">        totalerror+=(y-(w*x+b))**<span class="number">2</span>         <span class="comment">#计算均方误差</span></span><br><span class="line">    <span class="keyword">return</span> totalerror/float(len(points))</span><br></pre></td></tr></table></figure>
+<h2 id="寻找方法"><a href="#寻找方法" class="headerlink" title="寻找方法"></a>寻找方法</h2><h3 id="梯度下降法"><a href="#梯度下降法" class="headerlink" title="梯度下降法"></a>梯度下降法</h3><p>在单输入的情况下，可以通过计算推到获得一组准确的解（解析解），但在一些更复杂的情况，有可能求不出解析解，而随机的搜索试错又太耗时间。</p>
+<p>梯度下降算法(Gradient Descent)是神经网络训练中最常用的优化算法，配合强大的图形处理芯片GPU(Graphics Processing Unit)的并行加速能力，非常适合优化海量数据的神经网络模型，自然也适合优化我们这里的神经元线性模型。函数的梯度(Gradient)定义为函数对各个自变量的偏导数(Partial Derivative)组成的向量。<img src="https://github.com/Samuelise/img-folder/raw/master/img/%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E6%A2%AF%E5%BA%A6.png" alt="函数及其梯度向量">图中𝑥𝑦平面的红色箭头的长度表示梯度向量的模，箭头的方向表示梯度向量的方向。可以看到，箭头的方向总是指向当前位置函数值增速最大的方向，函数曲面越陡峭，箭头的长度也就越长，梯度的模也越大。</p>
+<p>通过上面的例子，我们能直观地感受到，函数在各处的梯度方向∇𝑓总是指向函数值增大的方向，那么梯度的反方向−∇𝑓应指向函数值减少的方向。</p>
+<p>利用这一性质，我们只需要按照$x’=x-𝜂∙∇𝑓$ 更新迭代$x’$ ，就能获得越来越小的函数值，其中𝜂用来缩放梯度向量，一般取较小的值，如0.01，0.001等，对于一维函数，上述向量形式可以退化成标量形式：$𝑥′ = 𝑥 − 𝜂 ∙\frac{d𝑦}{d𝑥}$ ，迭代更新$x’$若干次，这样得到的$x’$处的函数值$y’$是最小的。</p>
+<p>这里我们要最小化的是$L=\frac{1}{n}\sum^{n}_{i=1}(wx^{(i)}+b-y^{(i)})^2$，因为我们要优化的是w，b，所以有                         $𝑤′ = 𝑤 − 𝜂\frac{𝜕L}{𝜕𝑤}$                             $b’=b- 𝜂\frac{𝜕L}{𝜕b}$</p>
+<h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#function:计算导数，更新w,b</span></span><br><span class="line"><span class="comment">#param:b_current,w_current---当前b,w的值  points---样本点  lr---学习率</span></span><br><span class="line"><span class="comment">#return：[new_b,new_w]---新的[b，w] </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">step_gradient</span><span class="params">(b_current,w_current,points,lr)</span>:</span></span><br><span class="line">    b_gradient=<span class="number">0</span>  <span class="comment">#初始化</span></span><br><span class="line">    w_gradient=<span class="number">0</span></span><br><span class="line">    m=float(len(points))    <span class="comment">#总共m个点</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(points)):</span><br><span class="line">        x=points[i,<span class="number">0</span>]</span><br><span class="line">        y=points[i,<span class="number">1</span>]</span><br><span class="line">        b_gradient+=(<span class="number">2</span>/m)*((w_current*x+b_current)-y)   <span class="comment">#L对b求偏导</span></span><br><span class="line">        w_gradient+=(<span class="number">2</span>/m)*x*((w_current*x+b_current)-y)  <span class="comment">#L对w求偏导</span></span><br><span class="line">    new_b=b_current-(lr*b_gradient)  <span class="comment">#新的w，b</span></span><br><span class="line">    new_w=w_current-(lr*w_gradient)</span><br><span class="line">    <span class="keyword">return</span> [new_b,new_w]</span><br></pre></td></tr></table></figure>
+<h3 id="迭代更新"><a href="#迭代更新" class="headerlink" title="迭代更新"></a>迭代更新</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#function:梯度更新</span></span><br><span class="line"><span class="comment">#param:points---样本点  starting_b---起点b  starting_w---起点w</span></span><br><span class="line"><span class="comment">#param:lr---学习率   num_iterations---迭代次数</span></span><br><span class="line"><span class="comment">#return:[b,w]---迭代结果[b,w]</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_descent</span><span class="params">(points,starting_b,starting_w,lr,num_iterations)</span>:</span></span><br><span class="line">    b=starting_b</span><br><span class="line">    w=starting_w</span><br><span class="line">    <span class="keyword">for</span> step <span class="keyword">in</span> range(num_iterations):</span><br><span class="line">        b,w=step_gradient(b,w,np.array(points),lr)</span><br><span class="line">        loss=mse(b,w,points)</span><br><span class="line">        <span class="keyword">if</span> step%<span class="number">50</span>==<span class="number">0</span>:    <span class="comment">#每50次打印一下当前的loss，w,b</span></span><br><span class="line">            print(<span class="string">f'iteration:<span class="subst">&#123;step&#125;</span>,loss:<span class="subst">&#123;loss&#125;</span>,w:<span class="subst">&#123;w&#125;</span>,b:<span class="subst">&#123;b&#125;</span>'</span>)</span><br><span class="line">    <span class="keyword">return</span> [b,w]</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#主函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    lr=<span class="number">0.01</span>    <span class="comment">#学习率</span></span><br><span class="line">    initial_b=<span class="number">0</span>        <span class="comment">#初始化b</span></span><br><span class="line">    initial_w=<span class="number">0</span>        <span class="comment">#初始化w</span></span><br><span class="line">    num_iterations=<span class="number">1000</span>           <span class="comment">#训练次数</span></span><br><span class="line">    [b,w]=gradient_descent(data,initial_b,initial_w,lr,num_iterations)</span><br><span class="line">    loss=mse(b,w,data)</span><br><span class="line">    print(<span class="string">f'final loss:<span class="subst">&#123;loss&#125;</span>,w:<span class="subst">&#123;w&#125;</span>,b:<span class="subst">&#123;b&#125;</span>'</span>)  <span class="comment">#打印最终结果</span></span><br></pre></td></tr></table></figure>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><img src="https://raw.githubusercontent.com/Samuelise/img-folder/master/img/测试结果.png" alt="测试结果">)</p>
+<p>可见，此方法在解决线性问题参数求解时的强大之处，在非线性或非常复杂的问题上，可能梯度下降得到的并不是全局最优解，但在实践中，求得的数值解，仍能发挥很好的效果，可以直接使用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>换一个角度，该问题其实是一个连续量的预测问题，从数据集中训练出模型，从而预测未出现样本的输出值。更准确的说，是使用线性模型去逼近真实模型的线性回归问题。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tensorflow2-0神经网络/" rel="tag"># tensorflow2.0神经网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/13/C语言学习总结/" rel="next" title="C语言学习总结">
+                <i class="fa fa-chevron-left"></i> C语言学习总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Samuelise">
+            
+              <p class="site-author-name" itemprop="name">Samuelise</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络导入"><span class="nav-number">1.</span> <span class="nav-text">神经网络导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性问题"><span class="nav-number">2.</span> <span class="nav-text">线性问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻找方法"><span class="nav-number">3.</span> <span class="nav-text">寻找方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度下降法"><span class="nav-number">3.1.</span> <span class="nav-text">梯度下降法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度计算"><span class="nav-number">3.2.</span> <span class="nav-text">梯度计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代更新"><span class="nav-number">3.3.</span> <span class="nav-text">迭代更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">3.4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试结果"><span class="nav-number">3.5.</span> <span class="nav-text">测试结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Samuelise</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
