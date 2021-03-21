@@ -340,8 +340,8 @@
 <p>这道题非常简单，可以很容易就判断出NP状态对应的局面分别是什么。但对稍微复杂一点的情况，如<a href="https://www.luogu.org/problemnew/show/P2197" target="_blank" rel="noopener">Nim游戏</a>，其对应的状态集合非常大，直接使用NP状态理论求解时非常复杂，或者虽然可以求解，但效率也是极低的，因为需要对判断每一个局面是N-position还是P-position，即使可以用动态规划或记忆化搜索来进行优化，也很难优化到令人满意的程度。</p>
 <p>那么，对于此类问题，有没有一个通用且效率高的算法呢？</p>
 <p>这就需要用到博弈论中极为重要的工具———<strong>SG函数和SG定理</strong>。我们先不加证明的引入这两个概念。</p>
-<h2 id="SG函数"><a href="#SG函数" class="headerlink" title="SG函数"></a>SG函数</h2><p>  首先定义$mex=(minimal excludant)$运算，这是施加于一个集合的运算，表示最小的不属于这个集合的非负整数。例如,$mex{0,1,2,4 }=3、mex{ 2,3,5}=0、mex{0 }=1$。</p>
-<p> 对于任意状态 $x$ ， 定义 $SG(x) = mex(S)$,其中 $S$ 是 $x$ 后继状态的SG函数值的集合。如$x$ 有三个后继状态分别为$a,b,c$，那么$SG(x) = mex{ SG（a）,SG（b）,SG（c）}$。</p>
+<h2 id="SG函数"><a href="#SG函数" class="headerlink" title="SG函数"></a>SG函数</h2><p>  首先定义$mex=(minimal excludant)$运算，这是施加于一个集合的运算，表示最小的不属于这个集合的非负整数。例如,$mex\{0,1,2,4 \}=3、mex\{ 2,3,5\}=0、mex\{0 \}=1$。</p>
+<p> 对于任意状态 $x$ ， 定义 $SG(x) = mex(S)$,其中 $S$ 是 $x$ 后继状态的SG函数值的集合。如$x$ 有三个后继状态分别为$a,b,c$，那么$SG(x) = mex\{ SG（a）,SG（b）,SG（c）\}$。</p>
 <p>即，</p>
 <script type="math/tex; mode=display">
 SG\big(x) =mex\{ SG\big(y):y\in S\}</script><p><strong>SG值的意义为，如果SG(x) = 0，那么x是必败态，如果SG(x) != 0,那么x是必胜态。</strong></p>
@@ -355,7 +355,7 @@ SG\big(x_1,x_2,\ldots,x_n)=SG\big(x_1)\oplus SG(x_2)\oplus\cdots\oplus SG(x_n)</
 <p>游戏大致内容为：有若干堆石子，每堆石子的数量都是有限的，合法的移动是“选择一堆石子并拿走若干颗（不能不拿）”，如果轮到某个人时所有的石子堆都已经被拿空了，则判负（因为他此刻无法进行任何合法的移动）。</p>
 <p>因为一次只能从某一堆里取，所以我们先看只有一堆石子的情况。</p>
 <p>假如这一堆有n个石子，那么可取的石子数就为1 ~ n。</p>
-<p>$n=1$时，可以取走1个，$SG[1] = mex{SG[0]   }= mex{0 }  = 1$；<br>$n=2$时，可以取走1，2，$SG[2] = mex { SG[1]，SG[0]  }= mex { 0,1} = 2$;<br>$n=3$时，$SG[3] = mex{SG[2],SG[1],SG[0]  } = mex {0,1,2 }= 3$ ;<br>…..<br>可得下表，</p>
+<p>$n=1$时，可以取走1个，$SG[1] = mex\{SG[0]   \}= mex\{0 \}  = 1$；<br>$n=2$时，可以取走1，2，$SG[2] = mex \{ SG[1]，SG[0]  \}= mex \{ 0,1\} = 2$;<br>$n=3$时，$SG[3] = mex\{SG[2],SG[1],SG[0]  \} = mex \{0,1,2 \}= 3$ ;<br>…..<br>可得下表，</p>
 <div class="table-container">
 <table>
 <thead>
@@ -389,7 +389,7 @@ SG\big(x_1,x_2,\ldots,x_n)=SG\big(x_1)\oplus SG(x_2)\oplus\cdots\oplus SG(x_n)</
 </table>
 </div>
 <p>显然，$SG[n]=n$。</p>
-<p>对于$n$个石子,$SG[n]=mex{0，1，2…n-1} = n$。</p>
+<p>对于$n$个石子,$SG[n]=mex\{0，1，2…n-1\} = n$。</p>
 <p>那么对于m堆石子，根据SG定理，只需将每一堆的SG值异或起来即可。</p>
 <p>代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> t, n;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;t);</span><br><span class="line">	<span class="keyword">while</span> (t--) &#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">		<span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">			<span class="keyword">int</span> shu;</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;shu);</span><br><span class="line">			ans ^= shu;<span class="comment">//石子的个数即为该堆石子的SG值</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (!ans) <span class="built_in">printf</span>(<span class="string">"No\n"</span>);<span class="comment">//SG值为0时，先手必败</span></span><br><span class="line">		<span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">"Yes\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -810,6 +810,8 @@ a=b\oplus d=SG(x_1)\oplus \cdots \oplus SG(x_n)\oplus d=SG(x_1)\oplus\cdots\oplu
   
 
   
+  
+
 
   
 
